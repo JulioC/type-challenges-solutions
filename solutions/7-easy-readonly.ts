@@ -32,7 +32,8 @@
 
 /* _____________ Your Code Here _____________ */
 
-type MyPick<T, K extends string | number | symbol> = { [k in K]: k extends keyof T ? T[k] : never; };
+// type MyPick<T, K extends string | number | symbol> = { [k in K]: k extends keyof T ? T[k] : never; };
+type MyPick<T, K extends keyof T> = { [k in K]: T[k]; };
 
 /* _____________ Test Cases _____________ */
 import { Equal, Expect } from '@type-challenges/utils'
