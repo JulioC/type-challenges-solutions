@@ -32,8 +32,19 @@
 
 /* _____________ Your Code Here _____________ */
 
+// Original solution
+// Differently from Pick, this solution won't fail when when K is not a key of T
 // type MyPick<T, K extends string | number | symbol> = { [k in K]: k extends keyof T ? T[k] : never; };
+
+// Improved solution
+// Moved the restriction to the parameter definition, this fixes the issue in original issue
 type MyPick<T, K extends keyof T> = { [k in K]: T[k]; };
+
+// Alternative solution by zheeeng
+// Also doesn't behave correctly when K is not in T
+// type MyPick<T, K> = {
+//     [k in keyof T & K]: T[k]
+// }
 
 /* _____________ Test Cases _____________ */
 import { Equal, Expect } from '@type-challenges/utils'
@@ -41,6 +52,8 @@ import { Equal, Expect } from '@type-challenges/utils'
 type cases = [
   Expect<Equal<Expected1, MyPick<Todo, 'title'>>>,
   Expect<Equal<Expected2, MyPick<Todo, 'title' | 'completed'>>>,
+  // @ts-expect-error
+  MyPick<Todo, 'title' | 'completed' | 'invalid'>,
 ]
 
 interface Todo {
